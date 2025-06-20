@@ -35,7 +35,7 @@ body {
 
 .tagline {
     font-size: 11px;
-    color: #828282;
+    color: #191616;
 }
 
 /* Main Content */
@@ -182,8 +182,13 @@ body {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .hidden {
@@ -377,21 +382,221 @@ body {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .filter-grid {
-        grid-template-columns: 1fr;
-        gap: 8px;
+    .container {
+        padding: 0 10px;
     }
-    
-    .plans-table {
+
+    .header {
+        padding: 6px 0;
+    }
+
+    .logo {
+        font-size: 16px;
+    }
+
+    .tagline {
         font-size: 10px;
     }
-    
-    .plans-table th,
-    .plans-table td {
-        padding: 3px 2px;
+
+    .main {
+        padding: 10px 0;
     }
-    
+
+    .filters {
+        padding: 8px;
+        margin-bottom: 10px;
+    }
+
+    .filters h2 {
+        font-size: 12px;
+        margin-bottom: 6px;
+    }
+
+    .filter-grid {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .filter-group label {
+        font-size: 10px;
+        margin-bottom: 2px;
+    }
+
+    .filter-group input,
+    .filter-group select {
+        padding: 6px 4px;
+        font-size: 12px;
+    }
+
+    .btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
     .tabs {
         flex-wrap: wrap;
+        gap: 0;
+        margin-bottom: 10px;
+    }
+
+    .tab-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+        flex: 1;
+        min-width: 120px;
+    }
+
+    /* Mobile table - make it scrollable horizontally */
+    .plans-table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .plans-table {
+        min-width: 600px;
+        font-size: 10px;
+    }
+
+    .plans-table th {
+        padding: 6px 3px;
+        font-size: 9px;
+    }
+
+    .plans-table td {
+        padding: 6px 3px;
+    }
+
+    .provider-cell {
+        min-width: 80px;
+    }
+
+    .plan-cell {
+        min-width: 120px;
+        max-width: 150px;
+    }
+
+    .speed-cell {
+        min-width: 60px;
+        font-size: 9px;
+    }
+
+    .price-cell {
+        min-width: 50px;
+    }
+
+    .promo-cell {
+        min-width: 80px;
+        font-size: 9px;
+        padding: 2px 1px;
+    }
+
+    .contract-cell,
+    .setup-cell,
+    .data-cell {
+        min-width: 50px;
+    }
+
+    .pagination {
+        padding: 6px;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .pagination #page-info {
+        font-size: 10px;
+        order: 3;
+        flex-basis: 100%;
+        text-align: center;
+        margin-top: 4px;
+    }
+
+    .pagination #page-size {
+        font-size: 10px;
+        padding: 4px;
+    }
+
+    .pagination .btn {
+        font-size: 10px;
+        padding: 4px 6px;
+    }
+
+    .loading,
+    .error,
+    .no-results {
+        padding: 15px;
+        font-size: 12px;
+    }
+
+    .spinner {
+        width: 16px;
+        height: 16px;
+        margin: 0 auto 8px;
+    }
+
+    .table-loading-content {
+        font-size: 10px;
+        gap: 6px;
+    }
+
+    .table-loading-spinner {
+        width: 12px;
+        height: 12px;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 5px;
+    }
+
+    .logo {
+        font-size: 14px;
+    }
+
+    .tagline {
+        font-size: 9px;
+    }
+
+    .filters h2 {
+        font-size: 11px;
+    }
+
+    .tab-btn {
+        font-size: 11px;
+        padding: 6px 8px;
+        min-width: 100px;
+    }
+
+    .plans-table {
+        min-width: 500px;
+        font-size: 9px;
+    }
+
+    .plans-table th {
+        font-size: 8px;
+        padding: 4px 2px;
+    }
+
+    .plans-table td {
+        padding: 4px 2px;
+    }
+
+    .provider-cell {
+        min-width: 70px;
+    }
+
+    .plan-cell {
+        min-width: 100px;
+        max-width: 120px;
+    }
+
+    .pagination .btn {
+        font-size: 9px;
+        padding: 3px 5px;
+    }
+
+    .pagination #page-info {
+        font-size: 9px;
     }
 }

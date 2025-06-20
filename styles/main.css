@@ -1,0 +1,397 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Verdana, Geneva, sans-serif;
+    line-height: 1.4;
+    color: #000;
+    background-color: #f6f6ef;
+    font-size: 13px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header */
+.header {
+    background: #ff6600;
+    color: #000;
+    padding: 8px 0;
+    border-bottom: 1px solid #ff6600;
+}
+
+.logo {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.tagline {
+    font-size: 11px;
+    color: #828282;
+}
+
+/* Main Content */
+.main {
+    padding: 15px 0;
+}
+
+/* Filters Section */
+.filters {
+    background: #fff;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+}
+
+.filters h2 {
+    margin-bottom: 8px;
+    color: #000;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    align-items: end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-group label {
+    margin-bottom: 3px;
+    font-weight: normal;
+    color: #000;
+    font-size: 11px;
+}
+
+.filter-group input,
+.filter-group select {
+    padding: 4px;
+    border: 1px solid #ccc;
+    font-size: 11px;
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+    outline: none;
+    border-color: #ff6600;
+}
+
+/* Buttons */
+.btn {
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    background: #fff;
+    font-size: 11px;
+    font-family: Verdana, Geneva, sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    color: #000;
+}
+
+.btn-primary {
+    background: #ff6600;
+    color: #fff;
+    border-color: #ff6600;
+}
+
+.btn-primary:hover {
+    background: #e55a00;
+}
+
+.btn-secondary {
+    background: #fff;
+    color: #000;
+    border-color: #ccc;
+}
+
+.btn-secondary:hover {
+    background: #f0f0f0;
+}
+
+.btn:disabled {
+    background: #f0f0f0;
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    gap: 1px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ccc;
+}
+
+.tab-btn {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    background: #fff;
+    font-size: 11px;
+    cursor: pointer;
+    border-bottom: none;
+    font-family: Verdana, Geneva, sans-serif;
+    color: #000;
+}
+
+.tab-btn.active {
+    background: #f6f6ef;
+    font-weight: bold;
+}
+
+.tab-btn:not(.active):hover {
+    background: #f0f0f0;
+}
+
+/* Loading and Error States */
+.loading,
+.error,
+.no-results {
+    text-align: center;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ccc;
+    color: #000;
+    font-size: 11px;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #ff6600;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.hidden {
+    display: none;
+}
+
+/* Plans Table */
+.plans-table-container {
+    background: #fff;
+    border: 1px solid #ccc;
+}
+
+.plans-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+}
+
+.plans-table th {
+    background: #f0f0f0;
+    padding: 6px 4px;
+    text-align: left;
+    font-weight: bold;
+    color: #000;
+    border-bottom: 1px solid #ccc;
+    white-space: nowrap;
+    font-size: 10px;
+}
+
+.plans-table td {
+    padding: 4px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+.plans-table tbody tr:hover {
+    background-color: #fffbf0;
+}
+
+.plans-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Table cell specific styling */
+.provider-cell {
+    font-weight: bold;
+    color: #000;
+}
+
+.provider-link {
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.provider-link:hover {
+    color: #ff6600;
+    text-decoration: underline;
+}
+
+.provider-link:visited {
+    color: #828282;
+}
+
+.plan-cell {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #000;
+}
+
+.speed-cell {
+    font-family: monospace;
+    font-size: 10px;
+    color: #000;
+}
+
+.price-cell {
+    font-weight: bold;
+    color: #000;
+    text-align: right;
+}
+
+.promo-cell {
+    background: #e6f3ff;
+    color: #000;
+    padding: 2px 4px;
+    font-size: 10px;
+    text-align: center;
+}
+
+.promo-cell.no-promo {
+    background: transparent;
+    color: #828282;
+}
+
+.contract-cell {
+    text-align: center;
+    color: #828282;
+}
+
+.setup-cell {
+    text-align: right;
+    color: #000;
+}
+
+.setup-cell.has-fee {
+    color: #cc0000;
+}
+
+.data-cell {
+    text-align: center;
+    color: #828282;
+}
+
+/* Deal indicator */
+.deal-row {
+    background-color: #fffbf0 !important;
+    border-left: 3px solid #ff6600;
+}
+
+.deal-row:hover {
+    background-color: #fff8e1 !important;
+}
+
+/* Table Loading Overlay */
+#table-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.table-loading-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: #666;
+}
+
+.table-loading-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #ff6600;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    background: #f0f0f0;
+    border-top: 1px solid #ccc;
+}
+
+.pagination #page-info {
+    font-weight: normal;
+    color: #000;
+    font-size: 11px;
+}
+
+.pagination #page-size {
+    padding: 4px;
+    border: 1px solid #ccc;
+    font-size: 11px;
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+/* Footer */
+.footer {
+    background: #fff;
+    color: #828282;
+    text-align: center;
+    padding: 15px 0;
+    margin-top: 20px;
+    border-top: 1px solid #ccc;
+    font-size: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .filter-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    .plans-table {
+        font-size: 10px;
+    }
+    
+    .plans-table th,
+    .plans-table td {
+        padding: 3px 2px;
+    }
+    
+    .tabs {
+        flex-wrap: wrap;
+    }
+}

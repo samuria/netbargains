@@ -27,6 +27,9 @@ const priceFilter = document.getElementById('price-filter');
 const contractFilter = document.getElementById('contract-filter');
 const wirelessFilter = document.getElementById('wireless-filter');
 const dataFilter = document.getElementById('data-filter');
+const minDownloadFilter = document.getElementById('min-download-filter');
+const maxDownloadFilter = document.getElementById('max-download-filter');
+const minUploadFilter = document.getElementById('min-upload-filter');
 const firstBtn = document.getElementById('first-btn');
 const prevBtn = document.getElementById('prev-btn');
 const nextBtn = document.getElementById('next-btn');
@@ -216,6 +219,15 @@ function buildApiUrl() {
     if (currentFilters.unlimited_data !== undefined) {
         params.append('unlimited_data', currentFilters.unlimited_data);
     }
+    if (currentFilters.min_download_speed) {
+        params.append('min_download_speed', currentFilters.min_download_speed);
+    }
+    if (currentFilters.max_download_speed) {
+        params.append('max_download_speed', currentFilters.max_download_speed);
+    }
+    if (currentFilters.min_upload_speed) {
+        params.append('min_upload_speed', currentFilters.min_upload_speed);
+    }
 
     return `${API_BASE_URL}${endpoint}?${params.toString()}`;
 }
@@ -330,6 +342,9 @@ function applyFilters() {
     const contractLength = contractFilter.value;
     const fixedWireless = wirelessFilter.value;
     const dataLimit = dataFilter.value;
+    const minDownload = minDownloadFilter.value;
+    const maxDownload = maxDownloadFilter.value;
+    const minUpload = minUploadFilter.value;
 
     // Build filters object
     currentFilters = {};
@@ -359,6 +374,18 @@ function applyFilters() {
         currentFilters.unlimited_data = true;
     }
 
+    if (minDownload) {
+        currentFilters.min_download_speed = parseInt(minDownload);
+    }
+
+    if (maxDownload) {
+        currentFilters.max_download_speed = parseInt(maxDownload);
+    }
+
+    if (minUpload) {
+        currentFilters.min_upload_speed = parseInt(minUpload);
+    }
+
     // Reset to first page and reload data
     currentPage = 1;
     totalPlans = 0;
@@ -373,6 +400,9 @@ function clearFilters() {
     contractFilter.value = '';
     wirelessFilter.value = '';
     dataFilter.value = '';
+    minDownloadFilter.value = '';
+    maxDownloadFilter.value = '';
+    minUploadFilter.value = '';
     currentFilters = {};
     currentPage = 1;
     totalPlans = 0;

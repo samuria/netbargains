@@ -101,6 +101,20 @@
                             </select>
                         </div>
                     </div>
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label for="min-download-filter">Min Download (Mbps)</label>
+                            <input type="number" id="min-download-filter" placeholder="e.g. 50" min="0">
+                        </div>
+                        <div class="filter-group">
+                            <label for="max-download-filter">Max Download (Mbps)</label>
+                            <input type="number" id="max-download-filter" placeholder="e.g. 1000" min="0">
+                        </div>
+                        <div class="filter-group">
+                            <label for="min-upload-filter">Min Upload (Mbps)</label>
+                            <input type="number" id="min-upload-filter" placeholder="e.g. 10" min="0">
+                        </div>
+                    </div>
                     <div class="filter-actions">
                         <button id="apply-filters" class="btn btn-primary">Apply Filters</button>
                         <button id="clear-filters" class="btn btn-secondary">Clear All</button>

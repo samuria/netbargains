@@ -510,7 +510,7 @@ function formatPromotion(plan) {
 
     switch (plan.promo_type.toLowerCase()) {
         case 'discount':
-            return `$${plan.promo_value} off ${plan.promo_duration ? `${plan.promo_duration}mo` : ''}`;
+            return `$${plan.promo_value.toFixed(2)} off ${plan.promo_duration ? `${plan.promo_duration}mo` : ''}`;
         case 'free_months':
             return `${plan.promo_value} months free`;
         default:

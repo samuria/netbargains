@@ -21,10 +21,10 @@ body {
 
 /* Header */
 .header {
-    background: #ff6600;
-    color: #000;
+    background: #2563eb;
+    color: #fff;
     padding: 8px 0;
-    border-bottom: 1px solid #ff6600;
+    border-bottom: 1px solid #2563eb;
 }
 
 .logo {
@@ -44,15 +44,15 @@ body {
 
 .tagline {
     font-size: 11px;
-    color: #191616;
+    color: #e5e7eb;
 }
 
 .data-refresh-notice {
     font-size: 10px;
-    color: #828282;
+    color: #dbeafe;
     margin-top: 4px;
     padding: 2px 6px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 3px;
     display: inline-block;
 }
@@ -79,14 +79,14 @@ body {
 }
 
 .nav-link:hover {
-    color: #ff6600;
-    background: rgba(255, 102, 0, 0.05);
+    color: #2563eb;
+    background: rgba(37, 99, 235, 0.05);
 }
 
 .nav-link.active {
     font-weight: bold;
-    border-bottom-color: #ff6600;
-    color: #ff6600;
+    border-bottom-color: #2563eb;
+    color: #2563eb;
 }
 
 /* Breadcrumbs */
@@ -102,7 +102,7 @@ body {
 }
 
 .breadcrumbs a:hover {
-    color: #ff6600;
+    color: #2563eb;
     text-decoration: underline;
 }
 
@@ -209,8 +209,8 @@ body {
 .filter-group input:focus,
 .filter-group select:focus {
     outline: none;
-    border-color: #ff6600;
-    box-shadow: 0 0 0 1px rgba(255, 102, 0, 0.2);
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
 }
 
 .filter-actions {
@@ -236,13 +236,13 @@ body {
 }
 
 .btn-primary {
-    background: #ff6600;
+    background: #2563eb;
     color: #fff;
-    border-color: #ff6600;
+    border-color: #2563eb;
 }
 
 .btn-primary:hover {
-    background: #e55a00;
+    background: #1d4ed8;
 }
 
 .btn-secondary {
@@ -305,7 +305,7 @@ body {
     width: 20px;
     height: 20px;
     border: 2px solid #f3f3f3;
-    border-top: 2px solid #ff6600;
+    border-top: 2px solid #2563eb;
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin: 0 auto 10px;
@@ -391,7 +391,7 @@ body {
 }
 
 .provider-link:hover {
-    color: #ff6600;
+    color: #2563eb;
     text-decoration: underline;
 }
 
@@ -434,7 +434,7 @@ body {
 
 .promo-price-cell {
     font-weight: bold;
-    color: #ff6600;
+    color: #2563eb;
     text-align: right;
 }
 
@@ -465,12 +465,12 @@ body {
 
 /* Deal indicator */
 .deal-row {
-    background-color: #fffbf0 !important;
-    border-left: 3px solid #ff6600;
+    background-color: #eff6ff !important;
+    border-left: 3px solid #2563eb;
 }
 
 .deal-row:hover {
-    background-color: #fff8e1 !important;
+    background-color: #dbeafe !important;
 }
 
 /* Table Loading Overlay */
@@ -499,7 +499,7 @@ body {
     width: 16px;
     height: 16px;
     border: 2px solid #f3f3f3;
-    border-top: 2px solid #ff6600;
+    border-top: 2px solid #2563eb;
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
@@ -642,7 +642,7 @@ body {
 }
 
 .footer-nav a:hover {
-    color: #ff6600;
+    color: #2563eb;
     text-decoration: underline;
 }
 

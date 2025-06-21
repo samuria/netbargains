@@ -544,6 +544,10 @@ body {
         padding-top: 8px;
     }
 
+    .filter-container {
+        max-height: none;
+    }
+
     .btn {
         padding: 6px 10px;
         font-size: 12px;

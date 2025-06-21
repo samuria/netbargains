@@ -43,32 +43,67 @@
         <div class="container">
             <!-- Filters Section -->
             <section class="filters">
-                <h2>Filter Plans</h2>
-                <div class="filter-grid">
-                    <div class="filter-group">
-                        <label for="provider-filter">Provider:</label>
-                        <select id="provider-filter">
-                            <option value="">All Providers</option>
-                        </select>
+                <div class="filters-header">
+                    <h2>Filter Plans</h2>
+                    <button id="toggle-filters" class="btn btn-secondary filters-toggle" aria-expanded="true">
+                        <span class="toggle-icon">▼</span> Hide Filters
+                    </button>
+                </div>
+                <div class="filter-container" id="filter-container">
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label for="provider-filter">Provider</label>
+                            <select id="provider-filter">
+                                <option value="">All Providers</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="speed-filter">Speed Tier</label>
+                            <select id="speed-filter">
+                                <option value="">All Speeds</option>
+                                <option value="12">NBN 12 (Basic)</option>
+                                <option value="25">NBN 25 (Basic Plus)</option>
+                                <option value="50">NBN 50 (Standard)</option>
+                                <option value="100">NBN 100 (Fast)</option>
+                                <option value="250">NBN 250 (Superfast)</option>
+                                <option value="1000">NBN 1000 (Ultrafast)</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="price-filter">Max Price</label>
+                            <input type="number" id="price-filter" placeholder="$80" min="0">
+                        </div>
                     </div>
-                    <div class="filter-group">
-                        <label for="speed-filter">Speed Category:</label>
-                        <select id="speed-filter">
-                            <option value="">All Speeds</option>
-                            <option value="1-20">1-20 Mbps</option>
-                            <option value="20-50">20-50 Mbps</option>
-                            <option value="50-100">50-100 Mbps</option>
-                            <option value="100-250">100-250 Mbps</option>
-                            <option value="250+">250+ Mbps</option>
-                        </select>
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label for="contract-filter">Contract</label>
+                            <select id="contract-filter">
+                                <option value="">Any Contract</option>
+                                <option value="0">No lock-in</option>
+                                <option value="6">6 months</option>
+                                <option value="12">12 months</option>
+                                <option value="24">24 months</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="wireless-filter">Connection</label>
+                            <select id="wireless-filter">
+                                <option value="">All Types</option>
+                                <option value="false">Fixed Line</option>
+                                <option value="true">Fixed Wireless</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="data-filter">Data Limit</label>
+                            <select id="data-filter">
+                                <option value="">Any Data</option>
+                                <option value="unlimited">Unlimited Only</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="filter-group">
-                        <label for="price-filter">Max Price ($):</label>
-                        <input type="number" id="price-filter" placeholder="e.g. 80" min="0">
-                    </div>
-                    <div class="filter-group">
+                    <div class="filter-actions">
                         <button id="apply-filters" class="btn btn-primary">Apply Filters</button>
-                        <button id="clear-filters" class="btn btn-secondary">Clear</button>
+                        <button id="clear-filters" class="btn btn-secondary">Clear All</button>
                     </div>
                 </div>
             </section>
@@ -96,13 +131,13 @@
                 <table class="plans-table" id="plans-table">
                     <thead>
                         <tr>
-                            <th>Provider</th>
-                            <th>Plan</th>
-                            <th>Speed</th>
-                            <th>Price/mo</th>
+                            <th class="sortable" data-sort="provider_name">Provider <span class="sort-icon"></span></th>
+                            <th class="sortable" data-sort="plan_name">Plan <span class="sort-icon"></span></th>
+                            <th class="sortable" data-sort="download_speed">Speed <span class="sort-icon"></span></th>
+                            <th class="sortable" data-sort="monthly_price">Price/mo <span class="sort-icon"></span></th>
                             <th>Promo</th>
-                            <th>Contract</th>
-                            <th>Setup</th>
+                            <th class="sortable" data-sort="contract_length">Contract <span class="sort-icon"></span></th>
+                            <th class="sortable" data-sort="setup_fee">Setup <span class="sort-icon"></span></th>
                             <th>Data</th>
                         </tr>
                     </thead>

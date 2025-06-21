@@ -13,6 +13,8 @@ let pageSize = 20;
 let totalPlans = 0;
 let isLoading = false;
 let currentFilters = {};
+let sortColumn = 'monthly_price';
+let sortDirection = 'asc';
 
 // DOM Elements
 const loadingEl = document.getElementById('loading');
@@ -22,17 +24,23 @@ const plansContainer = document.getElementById('plans-container');
 const providerFilter = document.getElementById('provider-filter');
 const speedFilter = document.getElementById('speed-filter');
 const priceFilter = document.getElementById('price-filter');
+const contractFilter = document.getElementById('contract-filter');
+const wirelessFilter = document.getElementById('wireless-filter');
+const dataFilter = document.getElementById('data-filter');
 const firstBtn = document.getElementById('first-btn');
 const prevBtn = document.getElementById('prev-btn');
 const nextBtn = document.getElementById('next-btn');
 const lastBtn = document.getElementById('last-btn');
 const pageInfo = document.getElementById('page-info');
 const pageSizeSelect = document.getElementById('page-size');
+const toggleFiltersBtn = document.getElementById('toggle-filters');
+const filterContainer = document.getElementById('filter-container');
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', async () => {
     setupEventListeners();
     showDevModeIndicator();
+    loadFilterPreferences();
     await loadProviders();
     await loadPlans();
 });
@@ -96,6 +104,53 @@ function setupEventListeners() {
             applyFilters();
         }
     });
+
+    // Column sorting
+    document.querySelectorAll('.sortable').forEach(header => {
+        header.addEventListener('click', (e) => {
+            const column = header.dataset.sort;
+            if (sortColumn === column) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortDirection = 'asc';
+            }
+            sortPlans();
+            renderPlans(currentPlans);
+            updateSortIcons();
+        });
+    });
+
+    // Filter toggle
+    toggleFiltersBtn.addEventListener('click', () => {
+        const isExpanded = toggleFiltersBtn.getAttribute('aria-expanded') === 'true';
+        const newExpanded = !isExpanded;
+
+        toggleFiltersBtn.setAttribute('aria-expanded', newExpanded.toString());
+
+        if (newExpanded) {
+            filterContainer.classList.remove('collapsed');
+            toggleFiltersBtn.innerHTML = '<span class="toggle-icon">▼</span> Hide Filters';
+        } else {
+            filterContainer.classList.add('collapsed');
+            toggleFiltersBtn.innerHTML = '<span class="toggle-icon">▶</span> Show Filters';
+        }
+
+        // Save preference to localStorage
+        localStorage.setItem('filtersExpanded', newExpanded.toString());
+    });
+}
+
+// Load filter preferences from localStorage
+function loadFilterPreferences() {
+    const filtersExpanded = localStorage.getItem('filtersExpanded');
+
+    // Default to expanded (true) if no preference is stored
+    if (filtersExpanded === 'false') {
+        filterContainer.classList.add('collapsed');
+        toggleFiltersBtn.setAttribute('aria-expanded', 'false');
+        toggleFiltersBtn.innerHTML = '<span class="toggle-icon">▶</span> Show Filters';
+    }
 }
 
 // Update active tab styling
@@ -146,14 +201,20 @@ function buildApiUrl() {
     if (currentFilters.provider_id) {
         params.append('provider_id', currentFilters.provider_id);
     }
-    if (currentFilters.min_speed) {
-        params.append('min_speed', currentFilters.min_speed);
-    }
-    if (currentFilters.max_speed) {
-        params.append('max_speed', currentFilters.max_speed);
+    if (currentFilters.speed) {
+        params.append('speed', currentFilters.speed);
     }
     if (currentFilters.max_price) {
         params.append('max_price', currentFilters.max_price);
+    }
+    if (currentFilters.contract_length !== undefined) {
+        params.append('contract_length', currentFilters.contract_length);
+    }
+    if (currentFilters.fixed_wireless !== undefined) {
+        params.append('fixed_wireless', currentFilters.fixed_wireless);
+    }
+    if (currentFilters.unlimited_data !== undefined) {
+        params.append('unlimited_data', currentFilters.unlimited_data);
     }
 
     return `${API_BASE_URL}${endpoint}?${params.toString()}`;
@@ -192,8 +253,10 @@ async function loadPlans() {
             totalPlans = Math.max(totalPlans, (currentPage * pageSize) + 1);
         }
 
+        sortPlans();
         renderPlans(currentPlans);
         updatePaginationControls();
+        updateSortIcons();
         hideLoading();
         hideTableLoadingOverlay();
 
@@ -223,29 +286,50 @@ function getTotalPages() {
     return Math.max(1, Math.ceil(totalPlans / pageSize));
 }
 
-// Convert speed category to min/max speeds
-function getSpeedRange(speedCategory) {
-    switch (speedCategory) {
-        case '1-20':
-            return { min_speed: 1, max_speed: 20 };
-        case '20-50':
-            return { min_speed: 21, max_speed: 50 };
-        case '50-100':
-            return { min_speed: 51, max_speed: 100 };
-        case '100-250':
-            return { min_speed: 101, max_speed: 250 };
-        case '250+':
-            return { min_speed: 251, max_speed: null };
-        default:
-            return { min_speed: null, max_speed: null };
+// Sort plans client-side
+function sortPlans() {
+    currentPlans.sort((a, b) => {
+        let aValue = a[sortColumn];
+        let bValue = b[sortColumn];
+
+        // Handle null/undefined values
+        if (aValue === null || aValue === undefined) aValue = sortDirection === 'asc' ? Infinity : -Infinity;
+        if (bValue === null || bValue === undefined) bValue = sortDirection === 'asc' ? Infinity : -Infinity;
+
+        // String comparison for text fields
+        if (typeof aValue === 'string') {
+            aValue = aValue.toLowerCase();
+            bValue = bValue.toLowerCase();
+        }
+
+        if (sortDirection === 'asc') {
+            return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+        } else {
+            return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+        }
+    });
+}
+
+// Update sort icons
+function updateSortIcons() {
+    document.querySelectorAll('.sort-icon').forEach(icon => {
+        icon.textContent = '';
+    });
+
+    const activeHeader = document.querySelector(`[data-sort="${sortColumn}"] .sort-icon`);
+    if (activeHeader) {
+        activeHeader.textContent = sortDirection === 'asc' ? '▲' : '▼';
     }
 }
 
 // Apply filters and reload data from server
 function applyFilters() {
     const providerId = providerFilter.value;
-    const speedCategory = speedFilter.value;
+    const speed = speedFilter.value;
     const maxPrice = priceFilter.value;
+    const contractLength = contractFilter.value;
+    const fixedWireless = wirelessFilter.value;
+    const dataLimit = dataFilter.value;
 
     // Build filters object
     currentFilters = {};
@@ -254,18 +338,25 @@ function applyFilters() {
         currentFilters.provider_id = providerId;
     }
 
-    if (speedCategory) {
-        const speedRange = getSpeedRange(speedCategory);
-        if (speedRange.min_speed) {
-            currentFilters.min_speed = speedRange.min_speed;
-        }
-        if (speedRange.max_speed) {
-            currentFilters.max_speed = speedRange.max_speed;
-        }
+    if (speed) {
+        // Now using exact speed match instead of ranges
+        currentFilters.speed = parseInt(speed);
     }
 
     if (maxPrice) {
         currentFilters.max_price = parseFloat(maxPrice);
+    }
+
+    if (contractLength !== '') {
+        currentFilters.contract_length = parseInt(contractLength);
+    }
+
+    if (fixedWireless) {
+        currentFilters.fixed_wireless = fixedWireless === 'true';
+    }
+
+    if (dataLimit === 'unlimited') {
+        currentFilters.unlimited_data = true;
     }
 
     // Reset to first page and reload data
@@ -279,6 +370,9 @@ function clearFilters() {
     providerFilter.value = '';
     speedFilter.value = '';
     priceFilter.value = '';
+    contractFilter.value = '';
+    wirelessFilter.value = '';
+    dataFilter.value = '';
     currentFilters = {};
     currentPage = 1;
     totalPlans = 0;

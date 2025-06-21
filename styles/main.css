@@ -432,6 +432,12 @@ body {
     color: #828282;
 }
 
+.promo-price-cell {
+    font-weight: bold;
+    color: #ff6600;
+    text-align: right;
+}
+
 .savings-cell {
     font-weight: bold;
     color: #009900;

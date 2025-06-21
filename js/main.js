@@ -234,6 +234,13 @@ async function loadPlans() {
 
         currentPlans = await response.json();
 
+        // Calculate promo price for each plan if not provided by API
+        currentPlans.forEach(plan => {
+            if (!plan.promo_price) {
+                plan.promo_price = calculatePromoPrice(plan);
+            }
+        });
+
         // Estimate total count (this is a limitation without backend total count)
         // If we get fewer than pageSize, we're on the last page
         if (currentPlans.length < pageSize) {
@@ -268,6 +275,22 @@ async function goToPage(page) {
     if (page >= 1 && page <= totalPages && page !== currentPage) {
         currentPage = page;
         await loadPlans();
+    }
+}
+
+// Calculate promotional price (price during promo period)
+function calculatePromoPrice(plan) {
+    if (!plan.promo_value || !plan.promo_type) return plan.monthly_price;
+
+    switch (plan.promo_type?.toLowerCase()) {
+        case 'discount':
+            return Math.max(0, plan.monthly_price - plan.promo_value);
+        case 'free_months':
+            return 0; // Free means $0
+        case 'setup_waived':
+            return plan.monthly_price; // Setup fee doesn't affect monthly price
+        default:
+            return plan.monthly_price;
     }
 }
 
@@ -435,6 +458,7 @@ function renderPlans(plans) {
 // Create a plan table row HTML
 function createPlanRow(plan) {
     const hasPromo = plan.promo_value && plan.promo_type;
+    const promoPrice = plan.promo_price || calculatePromoPrice(plan);
 
     // Create provider cell with link if website is available
     const providerCell = plan.provider_website
@@ -447,6 +471,7 @@ function createPlanRow(plan) {
             <td class="plan-cell" title="${plan.plan_name}">${plan.plan_name}</td>
             <td class="speed-cell">${formatSpeed(plan)}</td>
             <td class="price-cell">$${plan.monthly_price.toFixed(2)}</td>
+            <td class="promo-price-cell">$${promoPrice.toFixed(2)}</td>
             <td class="promo-cell ${hasPromo ? '' : 'no-promo'}">
                 ${hasPromo ? formatPromotion(plan) : '-'}
             </td>

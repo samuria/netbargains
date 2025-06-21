@@ -199,7 +199,7 @@ async function loadDeals() {
 
     // Only show loading and clear content if we don't have static content
     const hasStaticContent = document.querySelectorAll('.static-content').length > 0;
-    
+
     if (!hasStaticContent) {
         if (currentPage === 1 || currentPlans.length === 0) {
             showLoading();
@@ -208,7 +208,7 @@ async function loadDeals() {
             showTableLoadingOverlay();
         }
     }
-    
+
     hideError();
     hideNoResults();
 
@@ -220,16 +220,19 @@ async function loadDeals() {
 
         let allDeals = await response.json();
 
-        // Calculate total savings for each plan if not provided by API
+        // Calculate total savings and promo price for each plan if not provided by API
         allDeals.forEach(plan => {
             if (!plan.total_savings && plan.promo_value) {
                 plan.total_savings = calculateTotalSavings(plan);
+            }
+            if (!plan.promo_price) {
+                plan.promo_price = calculatePromoPrice(plan);
             }
         });
 
         // Apply client-side filters for promo_type and min_savings
         if (currentFilters.promo_type) {
-            allDeals = allDeals.filter(plan => 
+            allDeals = allDeals.filter(plan =>
                 plan.promo_type && plan.promo_type.toLowerCase() === currentFilters.promo_type.toLowerCase()
             );
         }
@@ -250,10 +253,10 @@ async function loadDeals() {
         }
 
         sortPlans();
-        
+
         // Remove static content only after we have real data
         document.querySelectorAll('.static-content').forEach(el => el.remove());
-        
+
         renderPlans(currentPlans);
         updatePaginationControls();
         updateSortIcons();
@@ -285,6 +288,22 @@ function calculateTotalSavings(plan) {
             return plan.setup_fee || 0;
         default:
             return plan.promo_value;
+    }
+}
+
+// Calculate promotional price (price during promo period)
+function calculatePromoPrice(plan) {
+    if (!plan.promo_value || !plan.promo_type) return plan.monthly_price;
+
+    switch (plan.promo_type?.toLowerCase()) {
+        case 'discount':
+            return Math.max(0, plan.monthly_price - plan.promo_value);
+        case 'free_months':
+            return 0; // Free means $0
+        case 'setup_waived':
+            return plan.monthly_price; // Setup fee doesn't affect monthly price
+        default:
+            return plan.monthly_price;
     }
 }
 
@@ -437,7 +456,8 @@ function renderPlans(plans) {
 // Create a plan table row HTML
 function createPlanRow(plan) {
     const totalSavings = plan.total_savings || calculateTotalSavings(plan);
-    
+    const promoPrice = plan.promo_price || calculatePromoPrice(plan);
+
     // Create provider cell with link if website is available
     const providerCell = plan.provider_website
         ? `<a href="${plan.provider_website}" target="_blank" rel="noopener noreferrer" class="provider-link">${plan.provider_name || 'Unknown'}</a>`
@@ -449,6 +469,7 @@ function createPlanRow(plan) {
             <td class="plan-cell" title="${plan.plan_name}">${plan.plan_name}</td>
             <td class="speed-cell">${formatSpeed(plan)}</td>
             <td class="price-cell">$${plan.monthly_price.toFixed(2)}</td>
+            <td class="promo-price-cell">$${promoPrice.toFixed(2)}</td>
             <td class="promo-cell">${formatPromotion(plan)}</td>
             <td class="savings-cell">$${totalSavings.toFixed(0)}</td>
             <td class="contract-cell">${plan.contract_length ? `${plan.contract_length}mo` : 'No lock'}</td>

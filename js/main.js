@@ -135,9 +135,15 @@ function setupEventListeners() {
 // Load filter preferences from localStorage
 function loadFilterPreferences() {
     const filtersExpanded = localStorage.getItem('filtersExpanded');
+    const isMobile = window.innerWidth <= 768;
 
-    // Default to expanded (true) if no preference is stored
-    if (filtersExpanded === 'false') {
+    // Default to collapsed on mobile, expanded on desktop
+    const defaultExpanded = !isMobile;
+    
+    // Use stored preference if available, otherwise use default
+    const shouldExpand = filtersExpanded !== null ? filtersExpanded === 'true' : defaultExpanded;
+    
+    if (!shouldExpand) {
         filterContainer.classList.add('collapsed');
         toggleFiltersBtn.setAttribute('aria-expanded', 'false');
         toggleFiltersBtn.innerHTML = '<span class="toggle-icon">▶</span> Show Filters';

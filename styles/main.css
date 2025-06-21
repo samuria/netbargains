@@ -114,9 +114,9 @@ body {
 /* Filters Section */
 .filters {
     background: #fff;
-    padding: 12px;
+    padding: 10px;
     border: 1px solid #ccc;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     border-radius: 2px;
 }
 
@@ -124,7 +124,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
 }
 
 .filters h2 {
@@ -161,7 +161,7 @@ body {
 .filter-container {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
     overflow: hidden;
     transition: max-height 0.3s ease, opacity 0.3s ease;
     max-height: 300px;
@@ -177,7 +177,7 @@ body {
 
 .filter-row {
     display: flex;
-    gap: 12px;
+    gap: 8px;
     align-items: end;
 }
 
@@ -189,16 +189,16 @@ body {
 }
 
 .filter-group label {
-    margin-bottom: 4px;
+    margin-bottom: 2px;
     font-weight: bold;
     color: #000;
-    font-size: 11px;
+    font-size: 10px;
     white-space: nowrap;
 }
 
 .filter-group input,
 .filter-group select {
-    padding: 6px 8px;
+    padding: 4px 6px;
     border: 1px solid #ccc;
     font-size: 11px;
     font-family: Verdana, Geneva, sans-serif;
@@ -675,8 +675,8 @@ body {
     }
 
     .filters {
-        padding: 10px;
-        margin-bottom: 10px;
+        padding: 8px;
+        margin-bottom: 8px;
     }
 
     .filters h2 {
@@ -684,7 +684,7 @@ body {
     }
 
     .filters-header {
-        margin-bottom: 8px;
+        margin-bottom: 6px;
     }
 
     .filters-toggle {
@@ -694,7 +694,7 @@ body {
 
     .filter-row {
         flex-direction: column;
-        gap: 8px;
+        gap: 6px;
         align-items: stretch;
     }
 
@@ -706,13 +706,13 @@ body {
 
     .filter-group label {
         font-size: 10px;
-        margin-bottom: 3px;
+        margin-bottom: 2px;
     }
 
     .filter-group input,
     .filter-group select {
-        padding: 8px 6px;
-        font-size: 12px;
+        padding: 6px 4px;
+        font-size: 11px;
         width: 100%;
         box-sizing: border-box;
     }

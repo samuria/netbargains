@@ -1,10 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-AU">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NetBargains - Compare NBN Plans</title>
+    <title>NetBargains - Compare NBN Plans from Australian Providers | Best NBN Deals 2025</title>
+    <meta name="description"
+        content="Compare NBN plans from all major Australian providers. Find the best NBN deals, speeds, and prices. Updated daily with current promotions and discounts.">
+    <meta name="keywords"
+        content="NBN plans, NBN comparison, Australian internet, broadband plans, NBN deals, internet providers, Telstra NBN, Optus NBN, TPG NBN, Aussie Broadband">
+    <meta name="author" content="NetBargains">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://netbargains.com.au/">
+    <meta property="og:title" content="NetBargains - Compare NBN Plans from Australian Providers">
+    <meta property="og:description"
+        content="Compare NBN plans from all major Australian providers. Find the best NBN deals, speeds, and prices. Updated daily.">
+    <meta property="og:image" content="https://netbargains.com.au/images/og-image.png">
+
+    <!-- Twitter Card -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://netbargains.com.au/">
+    <meta property="twitter:title" content="NetBargains - Compare NBN Plans from Australian Providers">
+    <meta property="twitter:description"
+        content="Compare NBN plans from all major Australian providers. Find the best NBN deals, speeds, and prices.">
+    <meta property="twitter:image" content="https://netbargains.com.au/images/twitter-card.png">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://netbargains.com.au/">
+
     <link rel="stylesheet" href="styles/main.css">
     <script defer src="https://cloud.umami.is/script.js"
         data-website-id="c35eb02b-54ec-4af1-97b5-dcb67c3049cb"></script>
@@ -26,12 +51,48 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="favicon/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
+
+    <!-- Structured Data / JSON-LD -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "NetBargains",
+        "alternateName": "NetBargains NBN Comparison",
+        "url": "https://netbargains.com.au/",
+        "description": "Compare NBN plans from all major Australian internet providers. Find the best NBN deals, speeds, and prices.",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "https://netbargains.com.au/?search={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "NetBargains",
+        "url": "https://netbargains.com.au/",
+        "logo": "https://netbargains.com.au/images/logo.png",
+        "description": "Australian NBN plan comparison service providing daily updated pricing and deals from all major internet providers.",
+        "sameAs": [],
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "AU"
+        }
+    }
+    </script>
 </head>
 
 <body>
     <header class="header">
         <div class="container">
-            <h1 class="logo">NetBargains</h1>
+            <h1 class="logo">NetBargains <span class="seo-text">- NBN Plan Comparison</span></h1>
             <p class="tagline">Compare NBN Plans from Australian Providers</p>
             <div class="data-refresh-notice">
                 Data refreshed daily at 9:00 AM AEST
@@ -39,12 +100,20 @@
         </div>
     </header>
 
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="container">
+            <a href="index.html" class="nav-link active">All Plans</a>
+            <a href="deals.html" class="nav-link">Current Deals</a>
+        </div>
+    </nav>
+
     <main class="main">
         <div class="container">
             <!-- Filters Section -->
             <section class="filters">
                 <div class="filters-header">
-                    <h2>Filter Plans</h2>
+                    <h2>Filter NBN Plans</h2>
                     <button id="toggle-filters" class="btn btn-secondary filters-toggle" aria-expanded="true">
                         <span class="toggle-icon">▼</span> Hide Filters
                     </button>
@@ -122,12 +191,6 @@
                 </div>
             </section>
 
-            <!-- Navigation Tabs -->
-            <section class="tabs">
-                <button class="tab-btn active" data-tab="latest">Latest Plans</button>
-                <button class="tab-btn" data-tab="deals">Current Deals</button>
-            </section>
-
             <!-- Loading Indicator -->
             <div id="loading" class="loading hidden">
                 <div class="spinner"></div>
@@ -150,7 +213,8 @@
                             <th class="sortable" data-sort="download_speed">Speed <span class="sort-icon"></span></th>
                             <th class="sortable" data-sort="monthly_price">Price/mo <span class="sort-icon"></span></th>
                             <th>Promo</th>
-                            <th class="sortable" data-sort="contract_length">Contract <span class="sort-icon"></span></th>
+                            <th class="sortable" data-sort="contract_length">Contract <span class="sort-icon"></span>
+                            </th>
                             <th class="sortable" data-sort="setup_fee">Setup <span class="sort-icon"></span></th>
                             <th>Data</th>
                         </tr>
@@ -184,7 +248,13 @@
 
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 NetBargain. Data updated daily from provider websites.</p>
+            <p>&copy; 2025 NetBargains. NBN plan data updated daily from Australian provider websites. Compare internet
+                plans and save.</p>
+            <nav class="footer-nav">
+                <a href="index.html">All NBN Plans</a> | 
+                <a href="deals.html">NBN Deals</a> | 
+                <a href="sitemap.xml">Sitemap</a>
+            </nav>
         </div>
     </footer>
 

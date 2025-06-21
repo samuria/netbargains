@@ -12,8 +12,8 @@ let pageSize = 20;
 let totalPlans = 0;
 let isLoading = false;
 let currentFilters = {};
-let sortColumn = 'monthly_price';
-let sortDirection = 'asc';
+let sortColumn = 'total_savings';
+let sortDirection = 'desc';
 
 // DOM Elements
 const loadingEl = document.getElementById('loading');
@@ -23,12 +23,8 @@ const plansContainer = document.getElementById('plans-container');
 const providerFilter = document.getElementById('provider-filter');
 const speedFilter = document.getElementById('speed-filter');
 const priceFilter = document.getElementById('price-filter');
-const contractFilter = document.getElementById('contract-filter');
-const wirelessFilter = document.getElementById('wireless-filter');
-const dataFilter = document.getElementById('data-filter');
-const minDownloadFilter = document.getElementById('min-download-filter');
-const maxDownloadFilter = document.getElementById('max-download-filter');
-const minUploadFilter = document.getElementById('min-upload-filter');
+const promoTypeFilter = document.getElementById('promo-type-filter');
+const minSavingsFilter = document.getElementById('min-savings-filter');
 const firstBtn = document.getElementById('first-btn');
 const prevBtn = document.getElementById('prev-btn');
 const nextBtn = document.getElementById('next-btn');
@@ -44,7 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     showDevModeIndicator();
     loadFilterPreferences();
     await loadProviders();
-    await loadPlans();
+    await loadDeals();
 });
 
 // Show dev mode indicator
@@ -76,7 +72,7 @@ function setupEventListeners() {
     // Filter controls
     document.getElementById('apply-filters').addEventListener('click', applyFilters);
     document.getElementById('clear-filters').addEventListener('click', clearFilters);
-    document.getElementById('retry-btn').addEventListener('click', loadPlans);
+    document.getElementById('retry-btn').addEventListener('click', loadDeals);
 
     // Pagination controls
     firstBtn.addEventListener('click', () => goToPage(1));
@@ -86,7 +82,7 @@ function setupEventListeners() {
     pageSizeSelect.addEventListener('change', (e) => {
         pageSize = parseInt(e.target.value);
         currentPage = 1;
-        loadPlans();
+        loadDeals();
     });
 
     // Enter key on price filter
@@ -96,15 +92,21 @@ function setupEventListeners() {
         }
     });
 
+    minSavingsFilter.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            applyFilters();
+        }
+    });
+
     // Column sorting
     document.querySelectorAll('.sortable').forEach(header => {
-        header.addEventListener('click', (e) => {
+        header.addEventListener('click', () => {
             const column = header.dataset.sort;
             if (sortColumn === column) {
                 sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
             } else {
                 sortColumn = column;
-                sortDirection = 'asc';
+                sortDirection = column === 'total_savings' ? 'desc' : 'asc';
             }
             sortPlans();
             renderPlans(currentPlans);
@@ -127,16 +129,14 @@ function setupEventListeners() {
             toggleFiltersBtn.innerHTML = '<span class="toggle-icon">▶</span> Show Filters';
         }
 
-        // Save preference to localStorage
-        localStorage.setItem('filtersExpanded', newExpanded.toString());
+        localStorage.setItem('dealsFiltersExpanded', newExpanded.toString());
     });
 }
 
 // Load filter preferences from localStorage
 function loadFilterPreferences() {
-    const filtersExpanded = localStorage.getItem('filtersExpanded');
+    const filtersExpanded = localStorage.getItem('dealsFiltersExpanded');
 
-    // Default to expanded (true) if no preference is stored
     if (filtersExpanded === 'false') {
         filterContainer.classList.add('collapsed');
         toggleFiltersBtn.setAttribute('aria-expanded', 'false');
@@ -170,7 +170,6 @@ function populateProviderFilter() {
 
 // Build URL with filters
 function buildApiUrl() {
-    const endpoint = '/plans/latest';
     const skip = (currentPage - 1) * pageSize;
 
     const params = new URLSearchParams({
@@ -188,62 +187,73 @@ function buildApiUrl() {
     if (currentFilters.max_price) {
         params.append('max_price', currentFilters.max_price);
     }
-    if (currentFilters.contract_length !== undefined) {
-        params.append('contract_length', currentFilters.contract_length);
-    }
-    if (currentFilters.fixed_wireless !== undefined) {
-        params.append('fixed_wireless', currentFilters.fixed_wireless);
-    }
-    if (currentFilters.unlimited_data !== undefined) {
-        params.append('unlimited_data', currentFilters.unlimited_data);
-    }
-    if (currentFilters.min_download_speed) {
-        params.append('min_download_speed', currentFilters.min_download_speed);
-    }
-    if (currentFilters.max_download_speed) {
-        params.append('max_download_speed', currentFilters.max_download_speed);
-    }
-    if (currentFilters.min_upload_speed) {
-        params.append('min_upload_speed', currentFilters.min_upload_speed);
-    }
 
-    return `${API_BASE_URL}${endpoint}?${params.toString()}`;
+    return `${API_BASE_URL}/plans/deals?${params.toString()}`;
 }
 
-// Load plans based on current tab and page
-async function loadPlans() {
+// Load deals
+async function loadDeals() {
     if (isLoading) return;
 
-    // Show loading state without clearing table for pagination
-    if (currentPage === 1 || currentPlans.length === 0) {
-        showLoading();
-        plansContainer.innerHTML = '';
-    } else {
-        showTableLoadingOverlay();
+    isLoading = true;
+
+    // Only show loading and clear content if we don't have static content
+    const hasStaticContent = document.querySelectorAll('.static-content').length > 0;
+    
+    if (!hasStaticContent) {
+        if (currentPage === 1 || currentPlans.length === 0) {
+            showLoading();
+            plansContainer.innerHTML = '';
+        } else {
+            showTableLoadingOverlay();
+        }
     }
+    
     hideError();
     hideNoResults();
-
-    isLoading = true;
 
     try {
         const url = buildApiUrl();
         const response = await fetch(url);
 
-        if (!response.ok) throw new Error('Failed to load plans');
+        if (!response.ok) throw new Error('Failed to load deals');
 
-        currentPlans = await response.json();
+        let allDeals = await response.json();
 
-        // Estimate total count (this is a limitation without backend total count)
-        // If we get fewer than pageSize, we're on the last page
+        // Calculate total savings for each plan if not provided by API
+        allDeals.forEach(plan => {
+            if (!plan.total_savings && plan.promo_value) {
+                plan.total_savings = calculateTotalSavings(plan);
+            }
+        });
+
+        // Apply client-side filters for promo_type and min_savings
+        if (currentFilters.promo_type) {
+            allDeals = allDeals.filter(plan => 
+                plan.promo_type && plan.promo_type.toLowerCase() === currentFilters.promo_type.toLowerCase()
+            );
+        }
+
+        if (currentFilters.min_savings) {
+            allDeals = allDeals.filter(plan => {
+                const savings = plan.total_savings || 0;
+                return savings >= currentFilters.min_savings;
+            });
+        }
+
+        currentPlans = allDeals;
+
         if (currentPlans.length < pageSize) {
             totalPlans = ((currentPage - 1) * pageSize) + currentPlans.length;
         } else {
-            // We don't know the exact total, so estimate based on current page
             totalPlans = Math.max(totalPlans, (currentPage * pageSize) + 1);
         }
 
         sortPlans();
+        
+        // Remove static content only after we have real data
+        document.querySelectorAll('.static-content').forEach(el => el.remove());
+        
         renderPlans(currentPlans);
         updatePaginationControls();
         updateSortIcons();
@@ -254,11 +264,27 @@ async function loadPlans() {
             showNoResults();
         }
     } catch (error) {
-        console.error('Error loading plans:', error);
+        console.error('Error loading deals:', error);
         hideLoading();
         showError();
     } finally {
         isLoading = false;
+    }
+}
+
+// Calculate total savings based on promo type
+function calculateTotalSavings(plan) {
+    if (!plan.promo_value) return 0;
+
+    switch (plan.promo_type?.toLowerCase()) {
+        case 'discount':
+            return plan.promo_value * (plan.promo_duration || 1);
+        case 'free_months':
+            return plan.monthly_price * plan.promo_value;
+        case 'setup_waived':
+            return plan.setup_fee || 0;
+        default:
+            return plan.promo_value;
     }
 }
 
@@ -267,7 +293,7 @@ async function goToPage(page) {
     const totalPages = getTotalPages();
     if (page >= 1 && page <= totalPages && page !== currentPage) {
         currentPage = page;
-        await loadPlans();
+        await loadDeals();
     }
 }
 
@@ -276,7 +302,7 @@ function getTotalPages() {
     return Math.max(1, Math.ceil(totalPlans / pageSize));
 }
 
-// Sort plans client-side
+// Sort plans
 function sortPlans() {
     currentPlans.sort((a, b) => {
         let aValue = a[sortColumn];
@@ -312,19 +338,14 @@ function updateSortIcons() {
     }
 }
 
-// Apply filters and reload data from server
+// Apply filters
 function applyFilters() {
     const providerId = providerFilter.value;
     const speed = speedFilter.value;
     const maxPrice = priceFilter.value;
-    const contractLength = contractFilter.value;
-    const fixedWireless = wirelessFilter.value;
-    const dataLimit = dataFilter.value;
-    const minDownload = minDownloadFilter.value;
-    const maxDownload = maxDownloadFilter.value;
-    const minUpload = minUploadFilter.value;
+    const promoType = promoTypeFilter.value;
+    const minSavings = minSavingsFilter.value;
 
-    // Build filters object
     currentFilters = {};
 
     if (providerId) {
@@ -332,7 +353,6 @@ function applyFilters() {
     }
 
     if (speed) {
-        // Now using exact speed match instead of ranges
         currentFilters.speed = parseInt(speed);
     }
 
@@ -340,34 +360,20 @@ function applyFilters() {
         currentFilters.max_price = parseFloat(maxPrice);
     }
 
-    if (contractLength !== '') {
-        currentFilters.contract_length = parseInt(contractLength);
+    // Client-side filters
+    if (promoType) {
+        currentFilters.promo_type = promoType;
     }
 
-    if (fixedWireless) {
-        currentFilters.fixed_wireless = fixedWireless === 'true';
+    if (minSavings) {
+        currentFilters.min_savings = parseFloat(minSavings);
     }
 
-    if (dataLimit === 'unlimited') {
-        currentFilters.unlimited_data = true;
-    }
+    console.log('Applied filters:', currentFilters);
 
-    if (minDownload) {
-        currentFilters.min_download_speed = parseInt(minDownload);
-    }
-
-    if (maxDownload) {
-        currentFilters.max_download_speed = parseInt(maxDownload);
-    }
-
-    if (minUpload) {
-        currentFilters.min_upload_speed = parseInt(minUpload);
-    }
-
-    // Reset to first page and reload data
     currentPage = 1;
     totalPlans = 0;
-    loadPlans();
+    loadDeals();
 }
 
 // Clear all filters
@@ -375,23 +381,19 @@ function clearFilters() {
     providerFilter.value = '';
     speedFilter.value = '';
     priceFilter.value = '';
-    contractFilter.value = '';
-    wirelessFilter.value = '';
-    dataFilter.value = '';
-    minDownloadFilter.value = '';
-    maxDownloadFilter.value = '';
-    minUploadFilter.value = '';
+    promoTypeFilter.value = '';
+    minSavingsFilter.value = '';
     currentFilters = {};
     currentPage = 1;
     totalPlans = 0;
-    loadPlans();
+    loadDeals();
 }
 
 // Update pagination controls
 function updatePaginationControls() {
     const totalPages = getTotalPages();
 
-    pageInfo.textContent = `Page ${currentPage} of ${totalPages} (${currentPlans.length} plans shown)`;
+    pageInfo.textContent = `Page ${currentPage} of ${totalPages} (${currentPlans.length} deals shown)`;
 
     firstBtn.disabled = currentPage <= 1;
     prevBtn.disabled = currentPage <= 1;
@@ -434,26 +436,22 @@ function renderPlans(plans) {
 
 // Create a plan table row HTML
 function createPlanRow(plan) {
-    const hasPromo = plan.promo_value && plan.promo_type;
-
+    const totalSavings = plan.total_savings || calculateTotalSavings(plan);
+    
     // Create provider cell with link if website is available
     const providerCell = plan.provider_website
         ? `<a href="${plan.provider_website}" target="_blank" rel="noopener noreferrer" class="provider-link">${plan.provider_name || 'Unknown'}</a>`
         : (plan.provider_name || 'Unknown');
 
     return `
-        <tr>
+        <tr class="deal-row">
             <td class="provider-cell">${providerCell}</td>
             <td class="plan-cell" title="${plan.plan_name}">${plan.plan_name}</td>
             <td class="speed-cell">${formatSpeed(plan)}</td>
             <td class="price-cell">$${plan.monthly_price.toFixed(2)}</td>
-            <td class="promo-cell ${hasPromo ? '' : 'no-promo'}">
-                ${hasPromo ? formatPromotion(plan) : '-'}
-            </td>
+            <td class="promo-cell">${formatPromotion(plan)}</td>
+            <td class="savings-cell">$${totalSavings.toFixed(0)}</td>
             <td class="contract-cell">${plan.contract_length ? `${plan.contract_length}mo` : 'No lock'}</td>
-            <td class="setup-cell ${plan.setup_fee > 0 ? 'has-fee' : ''}">
-                ${plan.setup_fee > 0 ? `$${plan.setup_fee.toFixed(2)}` : 'Free'}
-            </td>
             <td class="data-cell">${plan.data_limit || 'Unlimited'}</td>
         </tr>
     `;
@@ -475,15 +473,19 @@ function formatSpeed(plan) {
 
 // Format promotion text
 function formatPromotion(plan) {
-    if (!plan.promo_value || !plan.promo_type) return '';
+    if (!plan.promo_value || !plan.promo_type) return 'Special Offer';
 
     switch (plan.promo_type.toLowerCase()) {
         case 'discount':
-            return `$${plan.promo_value} off ${plan.promo_duration ? `${plan.promo_duration}mo` : ''}`;
+            return `$${plan.promo_value} off ${plan.promo_duration ? `for ${plan.promo_duration}mo` : ''}`;
         case 'free_months':
             return `${plan.promo_value} months free`;
+        case 'setup_waived':
+            return 'Free setup';
+        case 'bonus':
+            return plan.promo_details || 'Bonus inclusion';
         default:
-            return `${plan.promo_type}`;
+            return plan.promo_details || plan.promo_type;
     }
 }
 
@@ -513,12 +515,4 @@ function showNoResults() {
 
 function hideNoResults() {
     noResultsEl.classList.add('hidden');
-}
-
-// Utility function to format currency
-function formatCurrency(amount) {
-    return new Intl.NumberFormat('en-AU', {
-        style: 'currency',
-        currency: 'AUD'
-    }).format(amount);
 }

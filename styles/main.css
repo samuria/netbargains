@@ -33,6 +33,15 @@ body {
     margin-bottom: 2px;
 }
 
+/* Hide SEO text visually but keep it for screen readers and search engines */
+.seo-text {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
 .tagline {
     font-size: 11px;
     color: #191616;
@@ -46,6 +55,55 @@ body {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 3px;
     display: inline-block;
+}
+
+/* Navigation */
+.main-nav {
+    background: #f6f6ef;
+    border-bottom: 1px solid #ccc;
+    padding: 0;
+}
+
+.main-nav .container {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-link {
+    padding: 8px 16px;
+    color: #000;
+    text-decoration: none;
+    font-size: 13px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+    color: #ff6600;
+    background: rgba(255, 102, 0, 0.05);
+}
+
+.nav-link.active {
+    font-weight: bold;
+    border-bottom-color: #ff6600;
+    color: #ff6600;
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+    font-size: 11px;
+    color: #828282;
+    margin-bottom: 15px;
+}
+
+.breadcrumbs a {
+    color: #828282;
+    text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+    color: #ff6600;
+    text-decoration: underline;
 }
 
 /* Main Content */
@@ -374,6 +432,12 @@ body {
     color: #828282;
 }
 
+.savings-cell {
+    font-weight: bold;
+    color: #009900;
+    text-align: right;
+}
+
 .contract-cell {
     text-align: center;
     color: #828282;
@@ -457,6 +521,99 @@ body {
     font-family: Verdana, Geneva, sans-serif;
 }
 
+/* Intro Content Section */
+.intro-content {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+}
+
+.intro-content h2 {
+    font-size: 16px;
+    margin-bottom: 12px;
+    color: #000;
+}
+
+.intro-content h3 {
+    font-size: 14px;
+    margin: 16px 0 8px 0;
+    color: #000;
+}
+
+.intro-content p {
+    line-height: 1.6;
+    margin-bottom: 12px;
+    color: #333;
+}
+
+.deal-types {
+    margin-top: 16px;
+}
+
+.deal-types ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.deal-types li {
+    padding: 6px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.deal-types li:last-child {
+    border-bottom: none;
+}
+
+.deal-types strong {
+    color: #000;
+}
+
+/* FAQ Section */
+.faq-section {
+    background: #fff;
+    padding: 20px;
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+}
+
+.faq-section h2 {
+    font-size: 16px;
+    margin-bottom: 16px;
+    color: #000;
+}
+
+.faq-item {
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #eee;
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.faq-item h3 {
+    font-size: 13px;
+    margin-bottom: 8px;
+    color: #000;
+}
+
+.faq-item p {
+    line-height: 1.6;
+    color: #333;
+    font-size: 12px;
+}
+
+/* Static content indicator */
+.static-content {
+    opacity: 0.8;
+}
+
 /* Footer */
 .footer {
     background: #fff;
@@ -466,6 +623,21 @@ body {
     margin-top: 20px;
     border-top: 1px solid #ccc;
     font-size: 10px;
+}
+
+.footer-nav {
+    margin-top: 8px;
+}
+
+.footer-nav a {
+    color: #828282;
+    text-decoration: none;
+    margin: 0 4px;
+}
+
+.footer-nav a:hover {
+    color: #ff6600;
+    text-decoration: underline;
 }
 
 /* Responsive Design */

@@ -140,10 +140,10 @@ function loadFilterPreferences() {
 
     // Default to collapsed on mobile, expanded on desktop
     const defaultExpanded = !isMobile;
-    
+
     // Use stored preference if available, otherwise use default
     const shouldExpand = filtersExpanded !== null ? filtersExpanded === 'true' : defaultExpanded;
-    
+
     if (!shouldExpand) {
         filterContainer.classList.add('collapsed');
         toggleFiltersBtn.setAttribute('aria-expanded', 'false');
@@ -225,7 +225,11 @@ async function loadDeals() {
 
         if (!response.ok) throw new Error('Failed to load deals');
 
-        let allDeals = await response.json();
+        const responseData = await response.json();
+
+        // Extract data from paginated response
+        let allDeals = responseData.items;
+        totalPlans = responseData.total;
 
         // Calculate total savings and promo price for each plan if not provided by API
         allDeals.forEach(plan => {
@@ -253,11 +257,7 @@ async function loadDeals() {
 
         currentPlans = allDeals;
 
-        if (currentPlans.length < pageSize) {
-            totalPlans = ((currentPage - 1) * pageSize) + currentPlans.length;
-        } else {
-            totalPlans = Math.max(totalPlans, (currentPage * pageSize) + 1);
-        }
+        // Note: Client-side filtering may affect the total count, but we'll use server count for now
 
         sortPlans();
 

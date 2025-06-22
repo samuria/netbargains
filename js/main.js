@@ -139,10 +139,10 @@ function loadFilterPreferences() {
 
     // Default to collapsed on mobile, expanded on desktop
     const defaultExpanded = !isMobile;
-    
+
     // Use stored preference if available, otherwise use default
     const shouldExpand = filtersExpanded !== null ? filtersExpanded === 'true' : defaultExpanded;
-    
+
     if (!shouldExpand) {
         filterContainer.classList.add('collapsed');
         toggleFiltersBtn.setAttribute('aria-expanded', 'false');
@@ -238,7 +238,11 @@ async function loadPlans() {
 
         if (!response.ok) throw new Error('Failed to load plans');
 
-        currentPlans = await response.json();
+        const responseData = await response.json();
+
+        // Extract data from paginated response
+        currentPlans = responseData.items;
+        totalPlans = responseData.total;
 
         // Calculate promo price for each plan if not provided by API
         currentPlans.forEach(plan => {
@@ -246,15 +250,6 @@ async function loadPlans() {
                 plan.promo_price = calculatePromoPrice(plan);
             }
         });
-
-        // Estimate total count (this is a limitation without backend total count)
-        // If we get fewer than pageSize, we're on the last page
-        if (currentPlans.length < pageSize) {
-            totalPlans = ((currentPage - 1) * pageSize) + currentPlans.length;
-        } else {
-            // We don't know the exact total, so estimate based on current page
-            totalPlans = Math.max(totalPlans, (currentPage * pageSize) + 1);
-        }
 
         sortPlans();
         renderPlans(currentPlans);

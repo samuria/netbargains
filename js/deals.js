@@ -480,7 +480,6 @@ function createPlanRow(plan) {
             <td class="promo-cell">${formatPromotion(plan)}</td>
             <td class="savings-cell">$${totalSavings.toFixed(0)}</td>
             <td class="contract-cell">${plan.contract_length ? `${plan.contract_length}mo` : 'No lock'}</td>
-            <td class="data-cell">${plan.data_limit || 'Unlimited'}</td>
         </tr>
     `;
 }

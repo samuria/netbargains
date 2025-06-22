@@ -480,7 +480,6 @@ function createPlanRow(plan) {
             <td class="setup-cell ${plan.setup_fee > 0 ? 'has-fee' : ''}">
                 ${plan.setup_fee > 0 ? `$${plan.setup_fee.toFixed(2)}` : 'Free'}
             </td>
-            <td class="data-cell">${plan.data_limit || 'Unlimited'}</td>
         </tr>
     `;
 }

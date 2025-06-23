@@ -7,6 +7,7 @@ const API_BASE_URL = DEV_MODE ? LOCAL_API_URL : PROD_API_URL;
 // State
 let currentPlans = [];
 let allProviders = [];
+let selectedProviders = [];
 let currentPage = 1;
 let pageSize = 20;
 let totalPlans = 0;
@@ -21,6 +22,7 @@ const errorEl = document.getElementById('error');
 const noResultsEl = document.getElementById('no-results');
 const plansContainer = document.getElementById('plans-container');
 const providerFilter = document.getElementById('provider-filter');
+const providerOptions = document.getElementById('provider-options');
 const speedFilter = document.getElementById('speed-filter');
 const priceFilter = document.getElementById('price-filter');
 const contractFilter = document.getElementById('contract-filter');
@@ -164,13 +166,66 @@ async function loadProviders() {
 
 // Populate provider filter dropdown
 function populateProviderFilter() {
-    providerFilter.innerHTML = '<option value="">All Providers</option>';
+    providerOptions.innerHTML = '';
     allProviders.forEach(provider => {
-        const option = document.createElement('option');
-        option.value = provider.id;
-        option.textContent = provider.name;
-        providerFilter.appendChild(option);
+        const option = document.createElement('label');
+        option.className = 'multi-select-option';
+        option.setAttribute('for', `provider-${provider.id}`);
+        option.innerHTML = `
+            <input type="checkbox" id="provider-${provider.id}" value="${provider.id}">
+            <span>${provider.name}</span>
+        `;
+        providerOptions.appendChild(option);
     });
+
+    // Add event listeners for multi-select
+    setupMultiSelectEvents();
+}
+
+// Setup multi-select events
+function setupMultiSelectEvents() {
+    const display = providerFilter.querySelector('.multi-select-display');
+    const options = providerFilter.querySelector('.multi-select-options');
+
+    // Toggle dropdown
+    display.addEventListener('click', (e) => {
+        e.stopPropagation();
+        providerFilter.classList.toggle('open');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!providerFilter.contains(e.target)) {
+            providerFilter.classList.remove('open');
+        }
+    });
+
+    // Handle checkbox changes
+    options.addEventListener('change', (e) => {
+        if (e.target.type === 'checkbox') {
+            updateSelectedProviders();
+            updateProviderDisplay();
+        }
+    });
+}
+
+// Update selected providers array
+function updateSelectedProviders() {
+    selectedProviders = Array.from(providerOptions.querySelectorAll('input[type="checkbox"]:checked'))
+        .map(checkbox => checkbox.value);
+}
+
+// Update provider display text
+function updateProviderDisplay() {
+    const display = providerFilter.querySelector('.multi-select-display');
+    if (selectedProviders.length === 0) {
+        display.textContent = 'All Providers';
+    } else if (selectedProviders.length === 1) {
+        const provider = allProviders.find(p => p.id == selectedProviders[0]);
+        display.textContent = provider ? provider.name : 'All Providers';
+    } else {
+        display.textContent = `${selectedProviders.length} providers selected`;
+    }
 }
 
 // Build URL with filters
@@ -184,8 +239,10 @@ function buildApiUrl() {
     });
 
     // Add filters
-    if (currentFilters.provider_id) {
-        params.append('provider_id', currentFilters.provider_id);
+    if (currentFilters.provider_ids && currentFilters.provider_ids.length > 0) {
+        currentFilters.provider_ids.forEach(id => {
+            params.append('provider_id', id);
+        });
     }
     if (currentFilters.speed) {
         params.append('speed', currentFilters.speed);
@@ -334,7 +391,7 @@ function updateSortIcons() {
 
 // Apply filters and reload data from server
 function applyFilters() {
-    const providerId = providerFilter.value;
+    updateSelectedProviders();
     const speed = speedFilter.value;
     const maxPrice = priceFilter.value;
     const contractLength = contractFilter.value;
@@ -346,8 +403,8 @@ function applyFilters() {
     // Build filters object
     currentFilters = {};
 
-    if (providerId) {
-        currentFilters.provider_id = providerId;
+    if (selectedProviders.length > 0) {
+        currentFilters.provider_ids = selectedProviders;
     }
 
     if (speed) {
@@ -387,7 +444,13 @@ function applyFilters() {
 
 // Clear all filters
 function clearFilters() {
-    providerFilter.value = '';
+    // Clear provider checkboxes
+    providerOptions.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    selectedProviders = [];
+    updateProviderDisplay();
+
     speedFilter.value = '';
     priceFilter.value = '';
     contractFilter.value = '';

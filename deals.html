@@ -133,9 +133,14 @@
                     <div class="filter-row">
                         <div class="filter-group">
                             <label for="provider-filter">Provider</label>
-                            <select id="provider-filter">
-                                <option value="">All Providers</option>
-                            </select>
+                            <div class="multi-select-container">
+                                <div class="multi-select-dropdown" id="provider-filter">
+                                    <div class="multi-select-display">All Providers</div>
+                                    <div class="multi-select-options" id="provider-options">
+                                        <!-- Options will be populated dynamically -->
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="filter-group">
                             <label for="speed-filter">Speed Tier</label>

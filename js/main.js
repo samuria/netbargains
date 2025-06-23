@@ -1,5 +1,5 @@
 // Configuration
-const DEV_MODE = true; // Set to false for production
+const DEV_MODE = false; // Set to false for production
 const LOCAL_API_URL = 'http://127.0.0.1:8000/api/v1';
 const PROD_API_URL = 'https://netbargains-1fbe06becf08.herokuapp.com/api/v1';
 const API_BASE_URL = DEV_MODE ? LOCAL_API_URL : PROD_API_URL;
@@ -460,7 +460,13 @@ function createPlanRow(plan) {
     const setupFeeIcon = plan.setup_fee > 0
         ? `<span class="setup-fee-info" title="Setup fee: $${plan.setup_fee.toFixed(2)}" style="margin-left: 5px; color: #ff6600; font-weight: bold; font-size: 14px; cursor: help; background: #fff3e0; padding: 0 4px; border-radius: 3px;">ⓘ</span>`
         : '';
-    const planNameCell = `${plan.plan_name}${setupFeeIcon}`;
+
+    // Create fixed wireless indicator if applicable
+    const fixedWirelessIcon = plan.fixed_wireless
+        ? `<span class="fixed-wireless-info" title="Fixed Wireless NBN" style="margin-left: 5px; color: #8b5cf6; font-weight: bold; font-size: 8px; cursor: help; background: #f3f0ff; padding: 1px 4px; border-radius: 3px;">FW</span>`
+        : '';
+
+    const planNameCell = `${plan.plan_name}${setupFeeIcon}${fixedWirelessIcon}`;
 
     return `
         <tr>

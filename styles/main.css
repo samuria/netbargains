@@ -325,6 +325,27 @@ body {
     display: none;
 }
 
+/* Availability Disclaimer */
+.availability-disclaimer {
+    background: #fdf5dc;
+    border: 1px solid #ffeaa7;
+    border-radius: 4px;
+    padding: 8px;
+    margin: 15px 0;
+    text-align: center;
+}
+
+.availability-disclaimer p {
+    margin: 0;
+    font-size: 10px;
+    color: #856404;
+    line-height: 1.4;
+}
+
+.availability-disclaimer strong {
+    color: #212529;
+}
+
 /* Plans Table */
 .plans-table-container {
     background: #fff;
@@ -663,7 +684,7 @@ body {
     .tagline {
         font-size: 10px;
     }
-    
+
     .data-refresh-notice {
         font-size: 9px;
         margin-top: 3px;
@@ -855,7 +876,7 @@ body {
     .tagline {
         font-size: 9px;
     }
-    
+
     .data-refresh-notice {
         font-size: 8px;
         margin-top: 2px;

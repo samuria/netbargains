@@ -1,5 +1,5 @@
 // Configuration
-const DEV_MODE = false; // Set to false for production
+const DEV_MODE = true; // Set to false for production
 const LOCAL_API_URL = 'http://127.0.0.1:8000/api/v1';
 const PROD_API_URL = 'https://netbargains-1fbe06becf08.herokuapp.com/api/v1';
 const API_BASE_URL = DEV_MODE ? LOCAL_API_URL : PROD_API_URL;
@@ -25,7 +25,6 @@ const speedFilter = document.getElementById('speed-filter');
 const priceFilter = document.getElementById('price-filter');
 const contractFilter = document.getElementById('contract-filter');
 const wirelessFilter = document.getElementById('wireless-filter');
-const dataFilter = document.getElementById('data-filter');
 const minDownloadFilter = document.getElementById('min-download-filter');
 const maxDownloadFilter = document.getElementById('max-download-filter');
 const minUploadFilter = document.getElementById('min-upload-filter');
@@ -200,9 +199,6 @@ function buildApiUrl() {
     if (currentFilters.fixed_wireless !== undefined) {
         params.append('fixed_wireless', currentFilters.fixed_wireless);
     }
-    if (currentFilters.unlimited_data !== undefined) {
-        params.append('unlimited_data', currentFilters.unlimited_data);
-    }
     if (currentFilters.min_download_speed) {
         params.append('min_download_speed', currentFilters.min_download_speed);
     }
@@ -343,7 +339,6 @@ function applyFilters() {
     const maxPrice = priceFilter.value;
     const contractLength = contractFilter.value;
     const fixedWireless = wirelessFilter.value;
-    const dataLimit = dataFilter.value;
     const minDownload = minDownloadFilter.value;
     const maxDownload = maxDownloadFilter.value;
     const minUpload = minUploadFilter.value;
@@ -372,10 +367,6 @@ function applyFilters() {
         currentFilters.fixed_wireless = fixedWireless === 'true';
     }
 
-    if (dataLimit === 'unlimited') {
-        currentFilters.unlimited_data = true;
-    }
-
     if (minDownload) {
         currentFilters.min_download_speed = parseInt(minDownload);
     }
@@ -401,7 +392,6 @@ function clearFilters() {
     priceFilter.value = '';
     contractFilter.value = '';
     wirelessFilter.value = '';
-    dataFilter.value = '';
     minDownloadFilter.value = '';
     maxDownloadFilter.value = '';
     minUploadFilter.value = '';

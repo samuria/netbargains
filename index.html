@@ -154,13 +154,6 @@
                                 <option value="true">Fixed Wireless</option>
                             </select>
                         </div>
-                        <div class="filter-group">
-                            <label for="data-filter">Data Limit</label>
-                            <select id="data-filter">
-                                <option value="">Any Data</option>
-                                <option value="unlimited">Unlimited Only</option>
-                            </select>
-                        </div>
                     </div>
                     <div class="filter-row">
                         <div class="filter-group">
@@ -193,6 +186,11 @@
             <div id="error" class="error hidden">
                 <p>Failed to load plans. Please try again.</p>
                 <button id="retry-btn" class="btn btn-secondary">Retry</button>
+            </div>
+
+            <!-- Availability Disclaimer -->
+            <div class="availability-disclaimer">
+                <p><strong>Note:</strong> Please check if the plan is available at your address by visiting the provider's website. This tool does not guarantee availability.</p>
             </div>
 
             <!-- Plans Table -->

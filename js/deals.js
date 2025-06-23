@@ -23,6 +23,8 @@ const noResultsEl = document.getElementById('no-results');
 const plansContainer = document.getElementById('plans-container');
 const providerFilter = document.getElementById('provider-filter');
 const providerOptions = document.getElementById('provider-options');
+const providerList = document.getElementById('provider-list');
+const providerSearch = document.getElementById('provider-search');
 const speedFilter = document.getElementById('speed-filter');
 const priceFilter = document.getElementById('price-filter');
 const promoTypeFilter = document.getElementById('promo-type-filter');
@@ -168,16 +170,26 @@ async function loadProviders() {
 
 // Populate provider filter dropdown
 function populateProviderFilter() {
-    providerOptions.innerHTML = '';
+    providerList.innerHTML = '';
+
+    // Add "Clear All" option at the top
+    const clearAllOption = document.createElement('div');
+    clearAllOption.className = 'multi-select-clear-all';
+    clearAllOption.innerHTML = `
+        <button type="button" class="clear-all-btn">Clear All Providers</button>
+    `;
+    providerList.appendChild(clearAllOption);
+
     allProviders.forEach(provider => {
         const option = document.createElement('label');
         option.className = 'multi-select-option';
         option.setAttribute('for', `provider-${provider.id}`);
+        option.setAttribute('data-provider-name', provider.name.toLowerCase());
         option.innerHTML = `
             <input type="checkbox" id="provider-${provider.id}" value="${provider.id}">
             <span>${provider.name}</span>
         `;
-        providerOptions.appendChild(option);
+        providerList.appendChild(option);
     });
 
     // Add event listeners for multi-select
@@ -187,12 +199,14 @@ function populateProviderFilter() {
 // Setup multi-select events
 function setupMultiSelectEvents() {
     const display = providerFilter.querySelector('.multi-select-display');
-    const options = providerFilter.querySelector('.multi-select-options');
 
     // Toggle dropdown
     display.addEventListener('click', (e) => {
         e.stopPropagation();
         providerFilter.classList.toggle('open');
+        if (providerFilter.classList.contains('open')) {
+            providerSearch.focus();
+        }
     });
 
     // Close dropdown when clicking outside
@@ -203,17 +217,66 @@ function setupMultiSelectEvents() {
     });
 
     // Handle checkbox changes
-    options.addEventListener('change', (e) => {
+    providerList.addEventListener('change', (e) => {
         if (e.target.type === 'checkbox') {
             updateSelectedProviders();
             updateProviderDisplay();
+
+            // Clear search and show all options after selection
+            providerSearch.value = '';
+            providerList.querySelectorAll('.multi-select-option').forEach(option => {
+                option.style.display = 'flex';
+            });
         }
     });
+
+    // Handle search input
+    providerSearch.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const options = providerList.querySelectorAll('.multi-select-option');
+
+        options.forEach(option => {
+            const providerName = option.getAttribute('data-provider-name');
+            if (providerName.includes(searchTerm)) {
+                option.style.display = 'flex';
+            } else {
+                option.style.display = 'none';
+            }
+        });
+    });
+
+    // Prevent dropdown from closing when clicking on search input
+    providerSearch.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
+    // Handle "Clear All" button
+    const clearAllBtn = providerList.querySelector('.clear-all-btn');
+    if (clearAllBtn) {
+        clearAllBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+
+            // Uncheck all provider checkboxes
+            providerList.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+
+            // Update state and display
+            selectedProviders = [];
+            updateProviderDisplay();
+
+            // Clear search and show all options
+            providerSearch.value = '';
+            providerList.querySelectorAll('.multi-select-option').forEach(option => {
+                option.style.display = 'flex';
+            });
+        });
+    }
 }
 
 // Update selected providers array
 function updateSelectedProviders() {
-    selectedProviders = Array.from(providerOptions.querySelectorAll('input[type="checkbox"]:checked'))
+    selectedProviders = Array.from(providerList.querySelectorAll('input[type="checkbox"]:checked'))
         .map(checkbox => checkbox.value);
 }
 
@@ -222,11 +285,13 @@ function updateProviderDisplay() {
     const display = providerFilter.querySelector('.multi-select-display');
     if (selectedProviders.length === 0) {
         display.textContent = 'All Providers';
-    } else if (selectedProviders.length === 1) {
-        const provider = allProviders.find(p => p.id == selectedProviders[0]);
-        display.textContent = provider ? provider.name : 'All Providers';
     } else {
-        display.textContent = `${selectedProviders.length} providers selected`;
+        const selectedNames = selectedProviders.map(id => {
+            const provider = allProviders.find(p => p.id == id);
+            return provider ? provider.name : '';
+        }).filter(name => name).join(', ');
+
+        display.textContent = selectedNames;
     }
 }
 
@@ -462,11 +527,17 @@ function applyFilters() {
 // Clear all filters
 function clearFilters() {
     // Clear provider checkboxes
-    providerOptions.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+    providerList.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
         checkbox.checked = false;
     });
     selectedProviders = [];
     updateProviderDisplay();
+
+    // Clear search
+    providerSearch.value = '';
+    providerList.querySelectorAll('.multi-select-option').forEach(option => {
+        option.style.display = 'flex';
+    });
 
     speedFilter.value = '';
     priceFilter.value = '';
@@ -527,6 +598,7 @@ function renderPlans(plans) {
 function createPlanRow(plan) {
     const totalSavings = plan.total_savings || calculateTotalSavings(plan);
     const promoPrice = plan.promo_price || calculatePromoPrice(plan);
+    const hasPromo = plan.promo_value && plan.promo_type;
 
     // Create provider cell with link if website is available
     const providerCell = plan.provider_website
@@ -546,7 +618,7 @@ function createPlanRow(plan) {
             <td class="plan-cell" title="${plan.plan_name}">${planNameCell}</td>
             <td class="speed-cell">${formatSpeed(plan)}</td>
             <td class="price-cell">$${plan.monthly_price.toFixed(2)}</td>
-            <td class="promo-price-cell">$${promoPrice.toFixed(2)}</td>
+            <td class="promo-price-cell ${hasPromo ? '' : 'no-promo'}">${hasPromo ? `$${promoPrice.toFixed(2)}` : '-'}</td>
             <td class="promo-cell">${formatPromotion(plan)}</td>
             <td class="savings-cell">$${totalSavings.toFixed(0)}</td>
             <td class="contract-cell">${plan.contract_length ? `${plan.contract_length}mo` : 'No lock'}</td>

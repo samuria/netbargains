@@ -102,25 +102,6 @@
                 <span aria-current="page">NBN Deals</span>
             </nav>
 
-            <!-- Intro Content for SEO -->
-            <section class="intro-content">
-                <h2>Current NBN Deals and Promotions in Australia</h2>
-                <p>Find the latest NBN deals and special offers from Australian internet providers. Our deals are
-                    updated daily and include promotions like free months, discounted rates, waived setup fees, and
-                    bonus inclusions. Compare current offers from Telstra, Optus, TPG, Aussie Broadband, and more.</p>
-
-                <div class="deal-types">
-                    <h3>Types of NBN Deals Available:</h3>
-                    <ul>
-                        <li><strong>Free Months:</strong> Get 1-6 months free on selected plans</li>
-                        <li><strong>Discounted Rates:</strong> Save $10-$30 per month for initial periods</li>
-                        <li><strong>No Setup Fees:</strong> Waived connection charges (usually $99-$300)</li>
-                        <li><strong>Speed Upgrades:</strong> Get faster speeds for the price of lower tiers</li>
-                        <li><strong>Bonus Inclusions:</strong> Free modems, streaming services, or call packs</li>
-                    </ul>
-                </div>
-            </section>
-
             <!-- Filters Section -->
             <section class="filters">
                 <div class="filters-header">
@@ -137,7 +118,12 @@
                                 <div class="multi-select-dropdown" id="provider-filter">
                                     <div class="multi-select-display">All Providers</div>
                                     <div class="multi-select-options" id="provider-options">
-                                        <!-- Options will be populated dynamically -->
+                                        <div class="multi-select-search">
+                                            <input type="text" placeholder="Search providers..." id="provider-search">
+                                        </div>
+                                        <div class="multi-select-list" id="provider-list">
+                                            <!-- Options will be populated dynamically -->
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -196,7 +182,8 @@
 
             <!-- Availability Disclaimer -->
             <div class="availability-disclaimer">
-                <p><strong>Note:</strong> Please check if the plan is available at your address by visiting the provider's website. This tool does not guarantee availability.</p>
+                <p><strong>Note:</strong> Please check if the plan is available at your address by visiting the
+                    provider's website. This tool does not guarantee availability.</p>
             </div>
 
             <!-- Deals Table -->
@@ -208,9 +195,9 @@
                             <th class="sortable" data-sort="plan_name">Plan <span class="sort-icon"></span></th>
                             <th class="sortable" data-sort="download_speed">Speed <span class="sort-icon"></span></th>
                             <th class="sortable" data-sort="monthly_price">Price/mo <span class="sort-icon"></span></th>
-                            <th class="sortable" data-sort="promo_price">After Promo <span class="sort-icon"></span>
+                            <th class="sortable" data-sort="promo_price">Promo price <span class="sort-icon"></span>
                             </th>
-                            <th class="sortable" data-sort="promo_value">Deal <span class="sort-icon"></span></th>
+                            <th class="sortable" data-sort="promo_value">Promo <span class="sort-icon"></span></th>
                             <th class="sortable" data-sort="total_savings">Savings <span class="sort-icon"></span></th>
                             <th class="sortable" data-sort="contract_length">Contract <span class="sort-icon"></span>
                             </th>
@@ -261,6 +248,25 @@
             <div id="no-results" class="no-results hidden">
                 <p>No deals found matching your criteria.</p>
             </div>
+
+            <!-- Intro Content for SEO -->
+            <section class="intro-content">
+                <h2>Current NBN Deals and Promotions in Australia</h2>
+                <p>Find the latest NBN deals and special offers from Australian internet providers. Our deals are
+                    updated daily and include promotions like free months, discounted rates, waived setup fees, and
+                    bonus inclusions. Compare current offers from Telstra, Optus, TPG, Aussie Broadband, and more.</p>
+
+                <div class="deal-types">
+                    <h3>Types of NBN Deals Available:</h3>
+                    <ul>
+                        <li><strong>Free Months:</strong> Get 1-6 months free on selected plans</li>
+                        <li><strong>Discounted Rates:</strong> Save $10-$30 per month for initial periods</li>
+                        <li><strong>No Setup Fees:</strong> Waived connection charges (usually $99-$300)</li>
+                        <li><strong>Speed Upgrades:</strong> Get faster speeds for the price of lower tiers</li>
+                        <li><strong>Bonus Inclusions:</strong> Free modems, streaming services, or call packs</li>
+                    </ul>
+                </div>
+            </section>
 
             <!-- FAQ Section for SEO -->
             <section class="faq-section">

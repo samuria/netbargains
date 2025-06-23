@@ -416,6 +416,58 @@ body {
     user-select: none;
 }
 
+.multi-select-search {
+    padding: 4px 6px;
+    border-bottom: 1px solid #eee;
+    background: #f9f9f9;
+}
+
+.multi-select-search input {
+    width: 100%;
+    padding: 4px 6px;
+    border: 1px solid #ccc;
+    font-size: 11px;
+    font-family: Verdana, Geneva, sans-serif;
+    border-radius: 2px;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+.multi-select-search input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
+}
+
+.multi-select-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.multi-select-clear-all {
+    padding: 4px 6px;
+    border-bottom: 1px solid #eee;
+    background: #f9f9f9;
+}
+
+.clear-all-btn {
+    width: 100%;
+    padding: 4px 6px;
+    border: 1px solid #ddd;
+    background: #fff;
+    font-size: 10px;
+    font-family: Verdana, Geneva, sans-serif;
+    color: #666;
+    cursor: pointer;
+    border-radius: 2px;
+    text-align: center;
+}
+
+.clear-all-btn:hover {
+    background: #f0f0f0;
+    color: #333;
+}
+
 /* Availability Disclaimer */
 .availability-disclaimer {
     background: #fdf5dc;
@@ -528,7 +580,7 @@ body {
 .price-cell {
     font-weight: bold;
     color: #000;
-    text-align: right;
+    text-align: center;
 }
 
 .promo-cell {
@@ -547,7 +599,12 @@ body {
 .promo-price-cell {
     font-weight: bold;
     color: #2563eb;
-    text-align: right;
+    text-align: center;
+}
+
+.promo-price-cell.no-promo {
+    color: #828282;
+    font-weight: normal;
 }
 
 .savings-cell {

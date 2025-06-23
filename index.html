@@ -118,7 +118,12 @@
                                 <div class="multi-select-dropdown" id="provider-filter">
                                     <div class="multi-select-display">All Providers</div>
                                     <div class="multi-select-options" id="provider-options">
-                                        <!-- Options will be populated dynamically -->
+                                        <div class="multi-select-search">
+                                            <input type="text" placeholder="Search providers..." id="provider-search">
+                                        </div>
+                                        <div class="multi-select-list" id="provider-list">
+                                            <!-- Options will be populated dynamically -->
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -195,7 +200,8 @@
 
             <!-- Availability Disclaimer -->
             <div class="availability-disclaimer">
-                <p><strong>Note:</strong> Please check if the plan is available at your address by visiting the provider's website. This tool does not guarantee availability.</p>
+                <p><strong>Note:</strong> Please check if the plan is available at your address by visiting the
+                    provider's website. This tool does not guarantee availability.</p>
             </div>
 
             <!-- Plans Table -->
@@ -207,7 +213,8 @@
                             <th class="sortable" data-sort="plan_name">Plan <span class="sort-icon"></span></th>
                             <th class="sortable" data-sort="download_speed">Speed <span class="sort-icon"></span></th>
                             <th class="sortable" data-sort="monthly_price">Price/mo <span class="sort-icon"></span></th>
-                            <th class="sortable" data-sort="promo_price">After Promo <span class="sort-icon"></span></th>
+                            <th class="sortable" data-sort="promo_price">Promo price <span class="sort-icon"></span>
+                            </th>
                             <th>Promo</th>
                             <th class="sortable" data-sort="contract_length">Contract <span class="sort-icon"></span>
                             </th>
@@ -245,8 +252,8 @@
             <p>&copy; 2025 NetBargains. NBN plan data updated daily from Australian provider websites. Compare internet
                 plans and save.</p>
             <nav class="footer-nav">
-                <a href="index.html">All NBN Plans</a> | 
-                <a href="deals.html">NBN Deals</a> | 
+                <a href="index.html">All NBN Plans</a> |
+                <a href="deals.html">NBN Deals</a> |
                 <a href="sitemap.xml">Sitemap</a>
             </nav>
         </div>

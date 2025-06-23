@@ -1,5 +1,5 @@
 // Configuration
-const DEV_MODE = false; // Set to false for production
+const DEV_MODE = true; // Set to false for production
 const LOCAL_API_URL = 'http://127.0.0.1:8000/api/v1';
 const PROD_API_URL = 'https://netbargains-1fbe06becf08.herokuapp.com/api/v1';
 const API_BASE_URL = DEV_MODE ? LOCAL_API_URL : PROD_API_URL;
@@ -62,7 +62,7 @@ function showDevModeIndicator() {
             color: white;
             padding: 4px 8px;
             font-size: 10px;
-            font-family: monospace;
+            font-family: Verdana, Geneva, sans-serif;
             z-index: 9999;
             border-bottom-left-radius: 3px;
         `;
@@ -607,7 +607,7 @@ function createPlanRow(plan) {
             <td class="promo-cell ${hasPromo ? '' : 'no-promo'}">
                 ${hasPromo ? formatPromotion(plan) : '-'}
             </td>
-            <td class="contract-cell">${plan.contract_length ? `${plan.contract_length}mo` : 'No lock'}</td>
+            <td class="contract-cell">${plan.contract_length ? `${plan.contract_length}mo` : '-'}</td>
         </tr>
     `;
 }

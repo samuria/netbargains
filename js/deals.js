@@ -470,10 +470,16 @@ function createPlanRow(plan) {
         ? `<a href="${plan.provider_website}" target="_blank" rel="noopener noreferrer" class="provider-link">${plan.provider_name || 'Unknown'}</a>`
         : (plan.provider_name || 'Unknown');
 
+    // Create plan name cell with setup fee info icon if applicable
+    const setupFeeIcon = plan.setup_fee > 0
+        ? `<span class="setup-fee-info" title="Setup fee: $${plan.setup_fee.toFixed(2)}" style="margin-left: 5px; color: #ff6600; font-weight: bold; font-size: 14px; cursor: help; background: #fff3e0; padding: 0 4px; border-radius: 3px;">ⓘ</span>`
+        : '';
+    const planNameCell = `${plan.plan_name}${setupFeeIcon}`;
+
     return `
         <tr class="deal-row">
             <td class="provider-cell">${providerCell}</td>
-            <td class="plan-cell" title="${plan.plan_name}">${plan.plan_name}</td>
+            <td class="plan-cell" title="${plan.plan_name}">${planNameCell}</td>
             <td class="speed-cell">${formatSpeed(plan)}</td>
             <td class="price-cell">$${plan.monthly_price.toFixed(2)}</td>
             <td class="promo-price-cell">$${promoPrice.toFixed(2)}</td>

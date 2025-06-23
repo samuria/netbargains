@@ -33,6 +33,16 @@ body {
     margin-bottom: 2px;
 }
 
+.logo a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.logo a:hover {
+    color: #e5e7eb;
+    text-decoration: none;
+}
+
 /* Hide SEO text visually but keep it for screen readers and search engines */
 .seo-text {
     position: absolute;

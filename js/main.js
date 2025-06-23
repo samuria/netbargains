@@ -461,11 +461,6 @@ function createPlanRow(plan) {
         ? `<span class="fixed-wireless-info" title="Fixed Wireless NBN" style="margin-left: 5px; color: #8b5cf6; font-weight: bold; font-size: 8px; cursor: help; background: #f3f0ff; padding: 1px 4px; border-radius: 3px;">FW</span>`
         : '';
 
-    // Create setup fee info icon for price cell if applicable
-    const setupFeeIcon = plan.setup_fee > 0
-        ? `<span class="setup-fee-info" title="Setup fee: $${plan.setup_fee.toFixed(2)}" style="margin-left: 5px; color: #ff6600; font-weight: bold; font-size: 10px; cursor: help; background: #fff3e0; padding: 0 4px; border-radius: 3px;">ⓘ</span>`
-        : '';
-
     const planNameCell = `${plan.plan_name}${fixedWirelessIcon}`;
 
     return `
@@ -473,7 +468,7 @@ function createPlanRow(plan) {
             <td class="provider-cell">${providerCell}</td>
             <td class="plan-cell" title="${plan.plan_name}">${planNameCell}</td>
             <td class="speed-cell">${formatSpeed(plan)}</td>
-            <td class="price-cell">${setupFeeIcon}$${plan.monthly_price.toFixed(2)}</td>
+            <td class="price-cell">$${plan.monthly_price.toFixed(2)}</td>
             <td class="promo-price-cell">$${promoPrice.toFixed(2)}</td>
             <td class="promo-cell ${hasPromo ? '' : 'no-promo'}">
                 ${hasPromo ? formatPromotion(plan) : '-'}

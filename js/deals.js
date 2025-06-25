@@ -1,7 +1,7 @@
 // Configuration
 const DEV_MODE = false; // Set to false for production
-const LOCAL_API_URL = 'http://127.0.0.1:8000/api/v1';
-const PROD_API_URL = 'https://netbargains-1fbe06becf08.herokuapp.com/api/v1';
+const LOCAL_API_URL = 'http://127.0.0.1:8000/v1';
+const PROD_API_URL = 'http://api.netbargains.com.au/';
 const API_BASE_URL = DEV_MODE ? LOCAL_API_URL : PROD_API_URL;
 
 // State

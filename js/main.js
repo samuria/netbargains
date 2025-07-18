@@ -595,7 +595,11 @@ function createPlanRow(plan) {
         ? `<span class="fixed-wireless-info" title="Fixed Wireless NBN" style="margin-left: 5px; color: #8b5cf6; font-weight: bold; font-size: 8px; cursor: help; background: #f3f0ff; padding: 1px 4px; border-radius: 3px;">FW</span>`
         : '';
 
-    const planNameCell = `${plan.plan_name}${fixedWirelessIcon}`;
+    const businessPlanIcon = plan.business_plan
+        ? `<span class="business_plan_info" title="Business Plan" style="margin-left: 5px; color: #5c92f6; font-weight: bold; font-size: 8px; cursor: help; background: #f3f0ff; padding: 1px 4px; border-radius: 3px;">B</span>`
+        : '';
+
+    const planNameCell = `${plan.plan_name}${businessPlanIcon}${fixedWirelessIcon}`;
 
     return `
         <tr>

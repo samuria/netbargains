@@ -1,7 +1,7 @@
 // Configuration
-const DEV_MODE = false;
 const LOCAL_API_URL = 'http://127.0.0.1:8000/v1';
 const PROD_API_URL = 'https://api.netbargains.com.au/v1';
+const DEV_MODE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 const API_BASE_URL = DEV_MODE ? LOCAL_API_URL : PROD_API_URL;
 
 // State

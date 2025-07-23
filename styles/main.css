@@ -6,7 +6,7 @@
 }
 
 body {
-    font-family: Verdana, Geneva, sans-serif;
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     line-height: 1.4;
     color: #000;
     background-color: #f6f6ef;

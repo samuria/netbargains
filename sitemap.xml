@@ -7,17 +7,25 @@
     <!-- Homepage -->
     <url>
         <loc>https://netbargains.com.au/</loc>
-        <lastmod>23-06-2025</lastmod>
+        <lastmod>2025-07-23</lastmod>
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
     </url>
     
     <!-- Deals Page -->
     <url>
-        <loc>https://netbargains.com.au/deals</loc>
-        <lastmod>23-06-2025</lastmod>
+        <loc>https://netbargains.com.au/deals.html</loc>
+        <lastmod>2025-07-23</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.9</priority>
+    </url>
+
+    <!-- Contact Page -->
+    <url>
+        <loc>https://netbargains.com.au/contact.html</loc>
+        <lastmod>2025-07-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
     </url>
     
     <!-- Provider Pages (Future) -->
